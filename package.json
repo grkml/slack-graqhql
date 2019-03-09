@@ -1,0 +1,29 @@
+{
+  "name": "slack-backend",
+  "version": "1.0.0",
+  "description": "An API using GraphQL managing a Slack Clone App.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d lib",
+    "mon": "nodemon --exec babel-node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gurkamalpsc/slack-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gurkamalpsc/slack-backend/issues"
+  },
+  "homepage": "https://github.com/gurkamalpsc/slack-backend#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.4",
+    "nodemon": "^1.18.10"
+  }
+}
