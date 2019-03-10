@@ -5,23 +5,27 @@ import resolvers from "./graphql/resolvers";
 import fs from "fs";
 import https from "https";
 import http from "http";
+import mongoose from "mongoose";
 
-const apollo = new ApolloServer({ typeDefs, resolvers });
-
-const app = express();
-apollo.applyMiddleware({ app });
-
-// Launch an HTTPS or HTTP server, per configuration
 let server;
-const configurations = {
+
+const serverOptions = {
   // Note: You may need sudo to run on port 443
-  production: { ssl: true, port: 443, hostname: "example.com" },
-  development: { ssl: false, port: 8080, hostname: "localhost" }
+  production: {
+    ssl: true,
+    port: 443,
+    hostname: "myslackclone.com"
+  },
+  development: {
+    ssl: false,
+    port: 8080,
+    hostname: "localhost"
+  }
 };
-const environment = process.env.NODE_ENV; // Set as development in .env
-const config = configurations[environment];
+
+const environment = process.env.NODE_ENV || "development";
+const config = serverOptions[environment];
 if (config.ssl) {
-  // Assumes certificates are in .ssl folder from package root.
   server = https.createServer(
     {
       key: fs.readFileSync(`./ssl/${environment}/server.key`),
@@ -33,9 +37,26 @@ if (config.ssl) {
   server = http.createServer(app);
 }
 
+// Connect MongoDB
+mongoose
+  .connect(process.env.MONGODB_URI, { useNewUrlParser: true })
+  .then(() => console.log("MongoDB Connected"))
+  .catch(error => {
+    throw new Error("MongoDB Connection Failed");
+  });
+
+// Initialize Express and ApolloServer
+const app = express();
+const apollo = new ApolloServer({
+  typeDefs,
+  resolvers
+});
+apollo.applyMiddleware({ app });
+
 // Add subscription support
 apollo.installSubscriptionHandlers(server);
 
+// Launch Server
 server.listen({ port: config.port }, () =>
   console.log(
     "🚀 Server ready at",
