@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 
 let server;
 
+// Configure Dev or Production Server
 const serverOptions = {
   // Note: You may need sudo to run on port 443
   production: {
@@ -22,8 +23,7 @@ const serverOptions = {
     hostname: "localhost"
   }
 };
-
-const environment = process.env.NODE_ENV || "development";
+const environment = process.env.NODE_ENV;
 const config = serverOptions[environment];
 if (config.ssl) {
   server = https.createServer(
