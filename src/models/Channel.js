@@ -14,6 +14,11 @@ const channelSchema = new Schema({
   public: {
     type: Boolean,
     required: true
+  },
+  channelMemberId: {
+    // If Private Channel
+    type: Schema.Types.ObjectId,
+    ref: "User"
   }
 });
 
