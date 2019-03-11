@@ -1,4 +1,13 @@
-export default `
+import { gql } from "apollo-server-express";
+
+export default gql`
+  type Query {
+    testField: String
+  }
+`;
+
+/*
+export default gql`
   type Team {
     owner: User!
     members: [User!]!
@@ -31,3 +40,5 @@ export default `
     testField: String
   }
 `;
+
+*/

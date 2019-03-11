@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src -d lib",
-    "mon": "nodemon --exec babel-node index.js"
+    "mon": "nodemon --exec babel-node index.js",
+    "start": "babel-node ./index.js"
   },
   "repository": {
     "type": "git",
