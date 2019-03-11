@@ -1,10 +1,12 @@
 import { gql } from "apollo-server-express";
 
-export default gql`
+const typeDefs = gql`
   type Query {
     testField: String
   }
 `;
+
+export default typeDefs;
 
 /*
 export default gql`

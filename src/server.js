@@ -7,29 +7,40 @@ import https from "https";
 import http from "http";
 import mongoose from "mongoose";
 
-let server;
+// Initialize Express App
+const app = express();
 
-// Configure Dev or Production Server
-const serverOptions = {
-  // Note: You may need sudo to run on port 443
+// Apply ApolloServer middleware
+const apollo = new ApolloServer({
+  typeDefs,
+  resolvers
+});
+apollo.applyMiddleware({ app });
+
+// Configure Environment Options
+const configOpts = {
   production: {
     ssl: true,
-    port: 443,
+    port: 443, // sudo command to run
     hostname: "myslackclone.com"
   },
   development: {
     ssl: false,
-    port: 8081,
+    port: 8080,
     hostname: "localhost"
   }
 };
-const environment = process.env.NODE_ENV;
-const config = serverOptions[environment];
+const env = process.env.NODE_ENV;
+const config = configOpts[env];
+
+// Configure Server (HTTP or HTTPS)
+let server;
 if (config.ssl) {
   server = https.createServer(
     {
-      key: fs.readFileSync(`./ssl/${environment}/server.key`),
-      cert: fs.readFileSync(`./ssl/${environment}/server.crt`)
+      // SSL Certificates
+      key: fs.readFileSync(`./ssl/${env}/server.key`),
+      cert: fs.readFileSync(`./ssl/${env}/server.crt`)
     },
     app
   );
@@ -37,24 +48,18 @@ if (config.ssl) {
   server = http.createServer(app);
 }
 
-// Connect MongoDB
-mongoose
-  .connect(process.env.MONGODB_URI, { useNewUrlParser: true })
-  .then(() => console.log("MongoDB Connected"))
-  .catch(error => {
-    throw new Error("MongoDB Connection Failed");
-  });
-
-// Initialize Express and ApolloServer
-const app = express();
-const apollo = new ApolloServer({
-  typeDefs,
-  resolvers
-});
-apollo.applyMiddleware({ app });
-
 // Add subscription support
 apollo.installSubscriptionHandlers(server);
+
+// Connect Database (MongoDB)
+const db = process.env.MONGODB_URI;
+mongoose
+  .connect(db, { useNewUrlParser: true })
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => {
+    console.log("Error:", err);
+    throw new Error("MongoDB Connection Failed");
+  });
 
 // Launch Server
 server.listen({ port: config.port }, () =>
