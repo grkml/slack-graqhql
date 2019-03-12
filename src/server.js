@@ -1,3 +1,4 @@
+require("dotenv").config(); // Load env variables
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { makeExecutableSchema } from "graphql-tools";

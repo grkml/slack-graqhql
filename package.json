@@ -5,16 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "mon": "nodemon --exec babel-node index.js",
-    "start": "babel-node index.js"
+    "build": "babel src -d lib",
+    "start": "node ./lib/server.js",
+    "dev": "nodemon --exec babel-node ./src/server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gurkamalpsc/slack-backend.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Gurkamal Singh",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/gurkamalpsc/slack-backend/issues"
   },
