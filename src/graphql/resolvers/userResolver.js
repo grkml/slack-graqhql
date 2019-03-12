@@ -44,25 +44,16 @@ export default {
   Mutation: {
 
     createUser: async(parent, args, context, info) => {
-      let response;
       const { User } = context.mongooseModels;
       const newUser = new User(args);
-      await newUser
-        .save()
-        .then((err, user) => {
-          if (err) {
-            console.log(err);
-            throw new Error("Mongoose save() error during createUser Mutation");
-          }
-          else {
-            response = {
-              id: newUser.id,
-              username: newUser.username,
-              email: newUser.email
-            };
-          }
-        });
-      return response;
+      const { id, username, email } = await newUser.save()
+      // .then((err, user) => {
+      //   if (err) {
+      //     console.log(err);
+      //     throw new Error("Mongoose save() error during createUser Mutation");
+      //   }
+      // });
+      return { id, username, email };
     }
 
   }
