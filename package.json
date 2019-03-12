@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": "An API using GraphQL managing a Slack Clone App.",
   "main": "index.js",
+  "engines": {
+    "node": "11.11.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src -d lib",
-    "start": "node ./lib/server.js",
-    "dev": "nodemon --exec babel-node ./src/server.js"
+    "start": "node lib/server.js",
+    "dev": "nodemon --exec babel-node src/server.js"
   },
   "repository": {
     "type": "git",

@@ -28,7 +28,10 @@ const app = express();
 
 // Initialize ApolloServer
 const apollo = new ApolloServer({ schema });
-apollo.applyMiddleware({ app });
+apollo.applyMiddleware({
+  app,
+  path: '/'
+});
 
 // Configure Environment Options
 const configOpts = {
