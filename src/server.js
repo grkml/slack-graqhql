@@ -42,7 +42,7 @@ const configOpts = {
   },
   development: {
     ssl: false,
-    port: 8080,
+    port: process.env.PORT || 8080,
     hostname: "localhost"
   }
 };
