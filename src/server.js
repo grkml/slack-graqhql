@@ -1,20 +1,32 @@
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
-import typeDefs from "./graphql/schema";
-import resolvers from "./graphql/resolvers";
+import { makeExecutableSchema } from "graphql-tools";
+//import typeDefs from "./graphql/schema";
+//import resolvers from "./graphql/resolvers";
 import fs from "fs";
 import https from "https";
 import http from "http";
 import mongoose from "mongoose";
 
+// Import GraphQL Schema and Resolvers
+import userSchema from "./graphql/schema/user";
+import User from "./graphql/resolvers/user";
+
+// Construct the Schema
+const schema = makeExecutableSchema({
+  typeDefs: [
+    userSchema
+  ],
+  resolvers: {
+    ...User
+  }
+})
+
 // Initialize Express App
 const app = express();
 
-// Apply ApolloServer middleware
-const apollo = new ApolloServer({
-  typeDefs,
-  resolvers
-});
+// Initialize ApolloServer
+const apollo = new ApolloServer({ schema });
 apollo.applyMiddleware({ app });
 
 // Configure Environment Options
@@ -36,15 +48,15 @@ const config = configOpts[env];
 // Configure Server (HTTP or HTTPS)
 let server;
 if (config.ssl) {
-  server = https.createServer(
-    {
+  server = https.createServer({
       // SSL Certificates
       key: fs.readFileSync(`./ssl/${env}/server.key`),
       cert: fs.readFileSync(`./ssl/${env}/server.crt`)
     },
     app
   );
-} else {
+}
+else {
   server = http.createServer(app);
 }
 
