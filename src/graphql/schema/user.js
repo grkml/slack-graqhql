@@ -1,7 +1,21 @@
 import { gql } from "apollo-server-express";
 
 export default gql `
-  type Query {
-    testField: String
+
+  type User {
+    id: ID!
+    username: String!
+    email: String!
+    # teams: [Team]
   }
+  
+  type Query {
+    getUser(id: ID!): User!
+    allUsers(id: Int!): [User!]!
+  }
+  
+  type Mutation {
+    createUser(username: String!, email: String!, password: String!): User!
+  }
+  
 `;

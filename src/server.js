@@ -2,8 +2,6 @@ require("dotenv").config(); // Load env variables
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { makeExecutableSchema } from "graphql-tools";
-//import typeDefs from "./graphql/schema";
-//import resolvers from "./graphql/resolvers";
 import fs from "fs";
 import https from "https";
 import http from "http";
@@ -11,7 +9,21 @@ import mongoose from "mongoose";
 
 // Import GraphQL Schema and Resolvers
 import userSchema from "./graphql/schema/user";
-import User from "./graphql/resolvers/user";
+import userResolver from "./graphql/resolvers/user";
+
+// Import Mongoose Models
+import Channel from "./models/Channel";
+import Message from "./models/Message";
+import Team from "./models/Team";
+import User from "./models/User"
+
+// Contruct Models Object for Apollo Context
+const mongooseModels = {
+  Channel,
+  Message,
+  Team,
+  User
+};
 
 // Construct the Schema
 const schema = makeExecutableSchema({
@@ -19,15 +31,22 @@ const schema = makeExecutableSchema({
     userSchema
   ],
   resolvers: {
-    ...User
+    ...userResolver
   }
-})
+});
 
 // Initialize Express App
 const app = express();
 
 // Initialize ApolloServer
-const apollo = new ApolloServer({ schema });
+const apollo = new ApolloServer({
+  schema,
+  context: () => {
+    return {
+      mongooseModels
+    }
+  }
+});
 apollo.applyMiddleware({
   app,
   path: '/'
