@@ -11,7 +11,7 @@ export default gql `
   
   type Query {
     getUser(id: ID!): User!
-    allUsers(id: Int!): [User!]!
+    allUsers: [User!]!
   }
   
   type Mutation {
