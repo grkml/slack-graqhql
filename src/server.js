@@ -8,22 +8,14 @@ import http from "http";
 import mongoose from "mongoose";
 
 // Import GraphQL Schema and Resolvers
-import userSchema from "./graphql/schema/user";
-import userResolver from "./graphql/resolvers/user";
+import userSchema from "./graphql/schema/userSchema";
+import userResolver from "./graphql/resolvers/userResolver";
 
 // Import Mongoose Models
 import Channel from "./models/Channel";
 import Message from "./models/Message";
 import Team from "./models/Team";
 import User from "./models/User"
-
-// Contruct Models Object for Apollo Context
-const mongooseModels = {
-  Channel,
-  Message,
-  Team,
-  User
-};
 
 // Construct the Schema
 const schema = makeExecutableSchema({
@@ -43,7 +35,12 @@ const apollo = new ApolloServer({
   schema,
   context: () => {
     return {
-      mongooseModels
+      mongooseModels: {
+        Channel,
+        Message,
+        Team,
+        User
+      }
     }
   }
 });
