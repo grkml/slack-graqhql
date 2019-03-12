@@ -86,10 +86,11 @@ else {
 // Add subscription support
 apollo.installSubscriptionHandlers(server);
 
-// Connect Database (MongoDB)
+// Connect to MongoDB and configure Mongoose
+mongoose.Promise = global.Promise;
 const db = process.env.MONGODB_URI;
 mongoose
-  .connect(db, { useNewUrlParser: true })
+  .connect(db, { useNewUrlParser: true, useCreateIndex: true })
   .then(() => console.log("MongoDB Connected"))
   .catch(err => {
     console.log("Error:", err);

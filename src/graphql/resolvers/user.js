@@ -1,33 +1,69 @@
 export default {
   Query: {
-    getUser: (parent, args, context, info) => {
-      return {
-        id: 'asdf1sdf',
-        username: 'testusername2',
-        email: 'email2@test.com',
-      }
+
+    getUser: async(parent, args, context, info) => {
+      let response;
+      const { User } = context.mongooseModels;
+      await User
+        .findById(args.id, 'id username email')
+        .then((err, user) => {
+          if (err) {
+            console.log(err);
+            throw new Error("Mongoose findOne() error during getUser Query");
+          }
+          else {
+            response = {
+              id: user.id,
+              username: user.username,
+              email: user.email
+            };
+          }
+        });
+      return response;
     },
-    allUsers: (parent, args, context, info) => {
-      return [{
-          id: 'asdf151sd',
-          username: 'testusername1',
-          email: 'email1@test.com',
-        },
-        {
-          id: 'asdf1sdf',
-          username: 'testusername2',
-          email: 'email2@test.com',
-        },
-      ]
+
+    allUsers: async(parent, args, context, info) => {
+      let response;
+      const { User } = context.mongooseModels;
+      await User
+        .find({}, 'id username email')
+        .then((err, users) => {
+          if (err) {
+            console.log(err);
+            throw new Error("Mongoose find() error during allUsers Query");
+          }
+          else {
+            response = users;
+          }
+        });
+      return response;
     }
+
   },
+
   Mutation: {
-    createUser: (parent, args, context, info) => {
-      return {
-        id: 'asdf151sd',
-        username: 'testusername1',
-        email: 'email1@test.com'
-      }
+
+    createUser: async(parent, args, context, info) => {
+      let response;
+      const { User } = context.mongooseModels;
+      const newUser = new User(args);
+      await newUser
+        .save()
+        .then((err, user) => {
+          if (err) {
+            console.log(err);
+            throw new Error("Mongoose save() error during createUser Mutation");
+          }
+          else {
+            response = {
+              id: newUser.id,
+              username: newUser.username,
+              email: newUser.email
+            };
+          }
+        });
+      return response;
     }
+
   }
 };
