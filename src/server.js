@@ -14,7 +14,7 @@ import userResolver from "./graphql/resolvers/userResolver";
 import Channel from "./models/Channel";
 import Message from "./models/Message";
 import Team from "./models/Team";
-import User from "./models/User"
+import User from "./models/User";
 
 // Construct the Schema
 const schema = makeExecutableSchema({
@@ -40,7 +40,7 @@ const apollo = new ApolloServer({
         Team,
         User
       }
-    }
+    };
   }
 });
 apollo.applyMiddleware({
@@ -83,14 +83,14 @@ else {
 apollo.installSubscriptionHandlers(server);
 
 // Connect to MongoDB and configure Mongoose
-mongoose.Promise = global.Promise;
 const db = process.env.MONGODB_URI;
+mongoose.Promise = global.Promise;
 mongoose
   .connect(db, { useNewUrlParser: true, useCreateIndex: true })
   .then(() => console.log("MongoDB Connected"))
   .catch(err => {
-    console.log("Error:", err);
-    throw new Error("MongoDB Connection Failed");
+    console.log("Error: MongoDB Connection Failed");
+    console.log(err);
   });
 
 // Launch Server
