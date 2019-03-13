@@ -1,6 +1,6 @@
 import { gql } from "apollo-server-express";
 
-export default gql `
+export default gql`
   type Team {
     owner: User!
     members: [User!]!
