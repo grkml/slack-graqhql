@@ -18,9 +18,7 @@ import User from "./models/User";
 
 // Construct the Schema
 const schema = makeExecutableSchema({
-  typeDefs: [
-    userSchema
-  ],
+  typeDefs: [userSchema],
   resolvers: {
     ...userResolver
   }
@@ -45,7 +43,7 @@ const apollo = new ApolloServer({
 });
 apollo.applyMiddleware({
   app,
-  path: '/'
+  path: "/"
 });
 
 // Configure Environment Options
@@ -67,15 +65,15 @@ const config = configOpts[env];
 // Configure Server (HTTP or HTTPS)
 let server;
 if (config.ssl) {
-  server = https.createServer({
+  server = https.createServer(
+    {
       // SSL Certificates
       key: fs.readFileSync(`./ssl/${env}/server.key`),
       cert: fs.readFileSync(`./ssl/${env}/server.crt`)
     },
     app
   );
-}
-else {
+} else {
   server = http.createServer(app);
 }
 
@@ -90,7 +88,7 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch(err => {
     console.log("Error: MongoDB Connection Failed");
-    console.log(err);
+    throw err;
   });
 
 // Launch Server
