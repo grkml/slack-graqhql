@@ -11,14 +11,12 @@ const teamSchema = new Schema({
   ownerId: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: false //true (false for testing)
   },
-  members: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "User"
-    }
-  ]
+  members: [{
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  }]
 });
 
 // Export Team Model
