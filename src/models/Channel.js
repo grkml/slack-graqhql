@@ -11,7 +11,7 @@ const channelSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Team"
   },
-  public: {
+  publicChannel: {
     type: Boolean,
     required: true
   },
