@@ -8,7 +8,13 @@ import mongoose from "mongoose";
 
 // Import GraphQL Schema and Resolvers
 import userSchema from "./graphql/schema/userSchema";
+import teamSchema from "./graphql/schema/teamSchema";
+import querySchema from "./graphql/schema/querySchema";
+import mutationSchema from "./graphql/schema/mutationSchema";
 import userResolver from "./graphql/resolvers/userResolver";
+import teamResolver from "./graphql/resolvers/teamResolver";
+import queryResolver from "./graphql/resolvers/queryResolver";
+import mutationResolver from "./graphql/resolvers/mutationResolver";
 
 // Import Mongoose Models
 import Channel from "./models/Channel";
@@ -18,9 +24,17 @@ import User from "./models/User";
 
 // Construct the Schema
 const schema = makeExecutableSchema({
-  typeDefs: [userSchema],
+  typeDefs: [
+    userSchema,
+    teamSchema,
+    querySchema,
+    mutationSchema
+  ],
   resolvers: {
-    ...userResolver
+    Team: teamResolver,
+    User: userResolver,
+    Query: queryResolver,
+    Mutation: mutationResolver
   }
 });
 
@@ -37,6 +51,9 @@ const apollo = new ApolloServer({
         Message,
         Team,
         User
+      },
+      user: {
+        id: "5c883f986ee6670017f146b9" // Dummy Test ID...will user JWT's later
       }
     };
   }
@@ -65,15 +82,15 @@ const config = configOpts[env];
 // Configure Server (HTTP or HTTPS)
 let server;
 if (config.ssl) {
-  server = https.createServer(
-    {
+  server = https.createServer({
       // SSL Certificates
       key: fs.readFileSync(`./ssl/${env}/server.key`),
       cert: fs.readFileSync(`./ssl/${env}/server.crt`)
     },
     app
   );
-} else {
+}
+else {
   server = http.createServer(app);
 }
 
