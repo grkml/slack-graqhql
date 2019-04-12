@@ -34,10 +34,13 @@ build/Release
 
 # Dependency directories
 node_modules/
+node_modules
 jspm_packages/
+jspm_packages
 
 # TypeScript v1 declaration files
 typings/
+typings
 
 # Optional npm cache directory
 .npm
@@ -81,20 +84,23 @@ typings/
 
 # Babel lib
 lib/
+lib
 
 # From create-react-app .gitignore
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
+node_modules
+.pnp
 .pnp.js
 
 # testing
 /coverage
+coverage
 
 # production
 /build
+build
 
 # misc
 .DS_Store
