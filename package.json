@@ -1,42 +1,10 @@
 {
-  "name": "slack-backend",
-  "version": "1.0.0",
-  "description": "An API using GraphQL managing a Slack Clone App.",
+  "name": "@gurkamalpsc/slack-graphql",
+  "version": "0.0.0",
   "main": "index.js",
-  "engines": {
-    "node": "11.11.0"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src -d build",
-    "start": "node build/index.js",
-    "dev": "nodemon --exec babel-node ./src/index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gurkamalpsc/slack-backend.git"
-  },
-  "keywords": [],
-  "author": "Gurkamal Singh",
+  "repository": "https://github.com/gurkamalpsc/yarn-workspaces.git",
+  "author": "Gurkamal Singh <gurkamalpsc@gmail.com>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/gurkamalpsc/slack-backend/issues"
-  },
-  "homepage": "https://github.com/gurkamalpsc/slack-backend#readme",
-  "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.3.4",
-    "@babel/node": "^7.2.2",
-    "@babel/preset-env": "^7.4.3",
-    "nodemon": "^1.18.10"
-  },
-  "dependencies": {
-    "@babel/polyfill": "^7.2.5",
-    "apollo-server-express": "^2.4.8",
-    "dotenv": "^6.2.0",
-    "express": "^4.16.4",
-    "graphql": "^14.1.1",
-    "graphql-tools": "^4.0.4",
-    "mongoose": "^5.4.18"
-  }
+  "private": true,
+  "workspaces": ["packages/*"]  
 }
