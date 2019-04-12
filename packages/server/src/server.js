@@ -1,10 +1,14 @@
+// TODO: Set SSL for final production
+
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { makeExecutableSchema } from "graphql-tools";
 import fs from "fs";
+import path from "path";
 import https from "https";
 import http from "http";
 import mongoose from "mongoose";
+import ip from "ip";
 
 // Import GraphQL Schema and Resolvers
 import userSchema from "./graphql/schema/userSchema";
@@ -40,7 +44,19 @@ const schema = makeExecutableSchema({
 
 // Initialize Express App
 const app = express();
+const env = process.env.NODE_ENV;
 
+// Test Route
+app.get('/test', (req, res) => res.json({msg: "endpoint works"}));
+
+// Serve React App or hit Server at "/"
+if (env === "production")
+  app.use('/', express.static("../client/build"));
+else if (env === "development")
+  app.get('/', (req, res) => res.redirect("/graphql"));
+else
+  app.get('/', (req, res) => res.status(500)).json({error: "$NODE_ENV"});
+  
 // Initialize ApolloServer
 const apollo = new ApolloServer({
   schema,
@@ -60,23 +76,27 @@ const apollo = new ApolloServer({
 });
 apollo.applyMiddleware({
   app,
-  path: "/"
+  path: "/graphql"
 });
 
 // Configure Environment Options
 const configOpts = {
+  // production: {
+  //   ssl: true,
+  //   port: 443, // sudo command to run
+  //   hostname: "myslackclone.com"
+  // },
   production: {
-    ssl: true,
-    port: 443, // sudo command to run
-    hostname: "myslackclone.com"
+    ssl: false,
+    port: process.env.PORT || 8080,
+    hostname: "127.0.0.1"
   },
   development: {
     ssl: false,
     port: process.env.PORT || 8080,
-    hostname: "localhost"
+    hostname: "127.0.0.1"
   }
 };
-const env = process.env.NODE_ENV;
 const config = configOpts[env];
 
 // Configure Server (HTTP or HTTPS)
@@ -107,12 +127,12 @@ mongoose
     console.log("Error: MongoDB Connection Failed");
     throw err;
   });
-
+console.log(server.address());
 // Launch Server
 server.listen({ port: config.port }, () =>
   console.log(
     "🚀 Server ready at",
-    `http${config.ssl ? "s" : ""}://${config.hostname}:${config.port}${
+    `http${config.ssl ? "s" : ""}://${ip.address()}:${server.address().port}${
       apollo.graphqlPath
     }`
   )

@@ -6,5 +6,21 @@
   "author": "Gurkamal Singh <gurkamalpsc@gmail.com>",
   "license": "MIT",
   "private": true,
-  "workspaces": ["packages/*"]  
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  },
+  "scripts": {
+    "client": "yarn workspace @gurkamalpsc/slack-graphql-client run dev",
+    "server": "yarn workspace @gurkamalpsc/slack-graphql-server run dev",
+    "dev": "concurrently \"yarn client\" \"yarn server\"",
+    "build": "yarn workspaces run build",
+    "start": "yarn workspace @gurkamalpsc/slack-graphql-server run start"
+  },
+  "engines": {
+    "node": "11.14.0"
+  },
+  "dependencies": {}
 }
