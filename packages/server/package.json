@@ -1,6 +1,6 @@
 {
   "name": "@gurkamalpsc/slack-graphql-server",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "An API using GraphQL managing a Slack Clone App.",
   "main": "src/index.js",
   "scripts": {

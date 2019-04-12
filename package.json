@@ -1,6 +1,6 @@
 {
   "name": "@gurkamalpsc/slack-graphql",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "index.js",
   "repository": "https://github.com/gurkamalpsc/yarn-workspaces.git",
   "author": "Gurkamal Singh <gurkamalpsc@gmail.com>",
