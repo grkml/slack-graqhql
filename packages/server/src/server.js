@@ -90,7 +90,7 @@ const configOpts = {
   // },
   production: {
     ssl: false,
-    port: process.env.PORT || 8080,
+    port: process.env.PORT || 5000,
     hostname: "127.0.0.1"
   },
   development: {
