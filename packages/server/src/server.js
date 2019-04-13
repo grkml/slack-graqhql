@@ -48,14 +48,6 @@ const env = process.env.NODE_ENV;
 
 // Test Route
 app.get('/test', (req, res) => res.json({msg: "endpoint works"}));
-
-// Serve React App or hit Server at "/"
-if (env === "production")
-  app.use('/', express.static("../client/build"));
-else if (env === "development")
-  app.get('/', (req, res) => res.redirect("/graphql"));
-else
-  app.get('/', (req, res) => res.status(500)).json({error: "$NODE_ENV"});
   
 // Initialize ApolloServer
 const apollo = new ApolloServer({
@@ -72,12 +64,22 @@ const apollo = new ApolloServer({
         id: "5c883f986ee6670017f146b9" // Dummy Test ID...will user JWT's later
       }
     };
-  }
+  },
+  introspection: true,
+  playground: true,
 });
 apollo.applyMiddleware({
   app,
   path: "/graphql"
 });
+
+// Serve React App or hit Server at "/"
+if (env === "production")
+  app.use('/', express.static("../client/build"));
+else if (env === "development")
+  app.get('/', (req, res) => res.redirect("/graphql"));
+else
+  app.get('/', (req, res) => res.status(500)).json({error: "$NODE_ENV"});
 
 // Configure Environment Options
 const configOpts = {

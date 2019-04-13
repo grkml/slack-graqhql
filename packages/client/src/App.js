@@ -3,16 +3,13 @@ import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 
-//const apiHostIp = process.env.REACT_APP_API_HOST;
-const apiHostIp = "";
-
 class App extends Component {
   state = {
     data: null
   }
   
   componentDidMount() {
-    axios.get(`${apiHostIp}/test`)
+    axios.get(`/test`)
       .then(res => {
         const data = res.data.msg;
         this.setState({data});
